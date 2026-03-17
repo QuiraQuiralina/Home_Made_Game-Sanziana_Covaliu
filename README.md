@@ -6,18 +6,23 @@ Project for the Game Development Classes
 
 //Character/////////////////////////
     Basic character control + Dodge, sprint, double-jump
+    Cecome a ship an fly away
 
 //Environment//////////////////////
-    Has some plant enemies (they do not move)
-    Has some collectibles
-    Has a power up that enhances jump
-
+    Platformer
+        Has some plant enemies (they do not move)
+        Has some collectibles
+        Has a power up that enhances jump
+    Spaceship
+        Can shoot down asteroids
+        Can collect rare gems if combos the asteroid debries
 
 //Internal comments///////////////
     1st commit included an empty .p8 file.
     Repository is create within game files not Pico8 carts
 
 //To do//////////////////////////
-    Link with 408B LAB repository
-    Find a way to invite Grig to repo
-    Rewrite the game Platformer_Sanziana.p8 in order to create the semester game
+    Fix colisions left and right
+    Create the character transformer
+    - explore tranform as collectible (trigger)
+    - explore tranform as keypress

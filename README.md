@@ -31,7 +31,9 @@ Project for the Game Development Classes
     Repository is create within game files not Pico8 carts
 
 //To do//////////////////////////
-    Fix colisions left and right
+    Fix colisions left and right (fixed)
+
     Explore ways to create the character transformer
     - Trigger the transformation through collecting a specific item
+    
     - Trigger the transformation through a keypress

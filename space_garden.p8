@@ -72,14 +72,16 @@ function player_update()
     player.landed = false
     player.jumping = true
   end
-  
+
   -- jump control - hold up to ascend, down to descend
   if not player.landed then
-    if btn(2) then -- up arrow
+    if btn(2) then
+      -- up arrow
       if player.dy > -player.max_dy then
         player.dy -= 0.2 -- controlled ascent
       end
-    elseif btn(3) then -- down arrow
+    elseif btn(3) then
+      -- down arrow
       if player.dy < player.max_dy then
         player.dy += 0.2 -- controlled descent
       end
@@ -94,14 +96,15 @@ function player_update()
   -- y movement & collision
   player.y += player.dy
   if player.dy > 0 then
-    if _collide_map(player, "down", 0) then
+    if (player.is_ship and ship_collider(player, "down", 0)) or (not player.is_ship and _collide_map(player, "down", 0)) then
       player.landed = true
       player.falling = false
       player.dy = 0
-      player.y = flr((player.y + player.h) / 8) * 8 - player.h
+      local current_h = player.is_ship and 16 or player.h
+      player.y = flr((player.y + current_h) / 8) * 8 - current_h
     end
   elseif player.dy < 0 then
-    if _collide_map(player, "up", 0) then
+    if (player.is_ship and ship_collider(player, "up", 0)) or (not player.is_ship and _collide_map(player, "up", 0)) then
       player.dy = 0
     end
   end
@@ -109,19 +112,21 @@ function player_update()
   -- x movement & collision
   player.x += player.dx
   if player.dx > 0 then
-    if _collide_map(player, "right", 0) then
+    if (player.is_ship and ship_collider(player, "right", 0)) or (not player.is_ship and _collide_map(player, "right", 0)) then
       player.dx = 0
-      player.x = flr((player.x + player.w) / 8) * 8 - player.w
+      local current_w = player.is_ship and 16 or player.w
+      player.x = flr((player.x + current_w) / 8) * 8 - current_w
     end
   elseif player.dx < 0 then
-    if _collide_map(player, "left", 0) then
+    if (player.is_ship and ship_collider(player, "left", 0)) or (not player.is_ship and _collide_map(player, "left", 0)) then
       player.dx = 0
       player.x = flr(player.x / 8) * 8 + 8
     end
   end
 
   -- map limits
-  player.x = mid(map_start, player.x, map_end - player.w)
+  local current_w = player.is_ship and 16 or player.w
+  player.x = mid(map_start, player.x, map_end - current_w)
 end -- this was the missing end!
 
 function player_animate()
@@ -147,17 +152,25 @@ function _collide_map(obj, aim, flag)
   local x1, y1, x2, y2
 
   if aim == "down" then
-    x1 = x + 2 y1 = y + h
-    x2 = x + w - 2 y2 = y + h
+    x1 = x + 2
+    y1 = y + h
+    x2 = x + w - 2
+    y2 = y + h
   elseif aim == "up" then
-    x1 = x + 2 y1 = y - 1
-    x2 = x + w - 2 y2 = y - 1
+    x1 = x + 2
+    y1 = y - 1
+    x2 = x + w - 2
+    y2 = y - 1
   elseif aim == "right" then
-    x1 = x + w y1 = y + 2
-    x2 = x + w y2 = y + h - 2
+    x1 = x + w
+    y1 = y + 2
+    x2 = x + w
+    y2 = y + h - 2
   elseif aim == "left" then
-    x1 = x - 1 y1 = y + 2
-    x2 = x - 1 y2 = y + h - 2
+    x1 = x - 1
+    y1 = y + 2
+    x2 = x - 1
+    y2 = y + h - 2
   end
 
   -- check tiles (mget uses tile coords, so divide by 8)
@@ -167,6 +180,40 @@ function _collide_map(obj, aim, flag)
   return false
 end
 
+function ship_collider(obj, aim, flag)
+  local x, y = obj.x, obj.y
+  local x1, y1, x2, y2, x3, y3, x4, y4
+
+  if aim == "down" then
+    x1 = x + 2 y1 = y + 16
+    x2 = x + 6 y2 = y + 16
+    x3 = x + 10 y3 = y + 16
+    x4 = x + 14 y4 = y + 16
+  elseif aim == "up" then
+    x1 = x + 2 y1 = y - 1
+    x2 = x + 6 y2 = y - 1
+    x3 = x + 10 y3 = y - 1
+    x4 = x + 14 y4 = y - 1
+  elseif aim == "right" then
+    x1 = x + 16 y1 = y + 2
+    x2 = x + 16 y2 = y + 6
+    x3 = x + 16 y3 = y + 10
+    x4 = x + 16 y4 = y + 14
+  elseif aim == "left" then
+    x1 = x - 1 y1 = y + 2
+    x2 = x - 1 y2 = y + 6
+    x3 = x - 1 y3 = y + 10
+    x4 = x - 1 y4 = y + 14
+  end
+
+  if fget(mget(x1 / 8, y1 / 8), flag)
+      or fget(mget(x2 / 8, y2 / 8), flag)
+      or fget(mget(x3 / 8, y3 / 8), flag)
+      or fget(mget(x4 / 8, y4 / 8), flag) then
+    return true
+  end
+  return false
+end
 
 __gfx__
 04444440044444400044444000444440004444400044444000000000004444400000800000098008000980008000900011111111100110111001000104494550

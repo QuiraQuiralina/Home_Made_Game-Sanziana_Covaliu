@@ -21,19 +21,46 @@ Project for the Game Development Classes
     Ground
         Has some plant enemies (they do not move)
         Has some collectibles
-        Has a power up that enhances jump
     Flight
         Can shoot down asteroids
         Can collect rare gems if combos the asteroid debries
 
 //Internal comments///////////////
-    1st commit included an empty .p8 file.
-    Repository is create within game files not Pico8 carts
+   {ViSUAL} is the tag for sprites and map updated
+   {CODE} is the tag for any new logic within the architecture
 
 //To do//////////////////////////
-    Fix colisions left and right (fixed)
-
+{CODE}
     Explore ways to create the character transformer
-    - Trigger the transformation through collecting a specific item
-    
-    - Trigger the transformation through a keypress
+    [SCRAPPED]Trigger the transformation through collecting a specific item
+        
+    [EXPLORING]Trigger the transformation through a keypress
+        [ONGOING]The ship_sprite is 4 sprites and needs a new 16x16 collision system
+            []Exploration of a character transform using the same logic as the player collision check
+               [1st TRY] Uses flr (floor) to round and snap to the grid the character
+                    Gemma's explanation is 
+                        So essentially, flr acts to instantly scrub away any unwanted decimal fractional values or overlaps caused by speed/gravity, forcibly "snapping" the character squarely on top of the map grid with absolute geometric precision!
+    []Explore a 5 item charge ship_fuel 
+    []Explore a 3 hit player_healthbar                     
+    []Explore ways to navigate the Y axis on the ship
+    []Explore ways to shoot down things
+    []Explore ways to make the map procedually 
+        Asteroid spawner with lifetime reverse counter
+        Map spawner with predetermined islands
+{ViSUAL}
+    []player_run_anim
+    []player_hurt_anim
+    []player_death_anim
+    []ship_fly_anim
+    []ship_idle_anim
+    [x]ship_destruction_anim
+    [x]platform_anim
+    [x]lever_anim
+    [x]button_anim
+    []bullet_anim
+    [x]asteroid_death_anim
+    [x]enemy_anim
+    []enemy_shoot_anim
+    [x]enemy_death_anim
+    []crystals_idle_anim
+    []crystals_pick-up_anim
